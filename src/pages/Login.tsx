@@ -77,9 +77,32 @@ export default function Login() {
             로그인
           </button>
 
-          <p className="text-center text-sm text-white/30 mt-8">
-            테스트: admin / manager1 / staff1 (비밀번호 아무거나)
-          </p>
+          <div className="mt-10 border border-white/10 rounded-xl p-4">
+            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider text-center mb-3">테스트 계정 (비밀번호: 아무거나)</p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-3 py-2 bg-white/[0.04] rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-red-400 bg-red-400/10 px-2 py-0.5 rounded">최고관리자</span>
+                  <span className="text-sm text-white/70">admin</span>
+                </div>
+                <span className="text-xs text-white/30">모든 기능 접근</span>
+              </div>
+              <div className="flex items-center justify-between px-3 py-2 bg-white/[0.04] rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded">매니저</span>
+                  <span className="text-sm text-white/70">manager1</span>
+                </div>
+                <span className="text-xs text-white/30">매출/지출/스케줄/보고서</span>
+              </div>
+              <div className="flex items-center justify-between px-3 py-2 bg-white/[0.04] rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-white/50 bg-white/[0.08] px-2 py-0.5 rounded">스태프</span>
+                  <span className="text-sm text-white/70">staff1</span>
+                </div>
+                <span className="text-xs text-white/30">예약/이용권/운영/희망스케줄</span>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>
