@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Search, Plus, Filter, Download } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { maskPhone, maskEmail, getStatusLabel } from '../../utils/helpers';
+import { maskPhone, maskEmail, getStatusLabel, calcVisitCount } from '../../utils/helpers';
 import StatusBadge from '../../components/StatusBadge';
 import { exportToExcel } from '../../services/exportExcel';
 
 export default function MemberList() {
-  const { members } = useData();
+  const { members, reservations } = useData();
   const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -29,7 +29,7 @@ export default function MemberList() {
             m.email,
             m.job,
             m.workMood,
-            m.visitCount,
+            calcVisitCount(m, reservations),
             getStatusLabel(m.membershipStatus),
             m.registeredAt,
             m.smsConsent ? 'Y' : 'N',
@@ -127,7 +127,7 @@ export default function MemberList() {
                   <td className="px-6 py-5 text-[15px] text-zinc-600">{maskPhone(member.phone, user?.role || 'staff')}</td>
                   <td className="px-6 py-5 text-[15px] text-zinc-600">{maskEmail(member.email, user?.role || 'staff')}</td>
                   <td className="px-6 py-5 text-[15px] text-zinc-600">{member.job}</td>
-                  <td className="px-6 py-5 text-center text-[15px] font-semibold">{member.visitCount}회</td>
+                  <td className="px-6 py-5 text-center text-[15px] font-semibold">{calcVisitCount(member, reservations)}회</td>
                   <td className="px-6 py-5 text-center"><StatusBadge status={member.membershipStatus} /></td>
                   <td className="px-6 py-5 text-[14px] text-zinc-400">{member.registeredAt}</td>
                   <td className="px-6 py-5 text-center">

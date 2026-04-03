@@ -1,4 +1,4 @@
-import type { UserRole } from '../types';
+import type { UserRole, Member, Reservation } from '../types';
 
 export function maskPhone(phone: string, role: UserRole): string {
   if (role === 'super_admin' || role === 'manager') return phone;
@@ -70,6 +70,19 @@ export function getRoleLabel(role: UserRole): string {
     staff: '스태프',
   };
   return labels[role];
+}
+
+export function getPhoneLast4(phone: string): string {
+  return phone.replace(/[^0-9]/g, '').slice(-4);
+}
+
+export function calcVisitCount(member: Member, reservations: Reservation[]): number {
+  const last4 = getPhoneLast4(member.phone);
+  return reservations.filter(r =>
+    r.reserverName === member.name &&
+    getPhoneLast4(r.phone) === last4 &&
+    r.status === 'checked_out'
+  ).length;
 }
 
 export function generateId(): string {

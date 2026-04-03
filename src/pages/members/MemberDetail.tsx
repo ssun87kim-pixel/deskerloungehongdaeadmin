@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Edit, Ticket, Calendar, Clock } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { maskPhone, maskEmail, formatCurrency } from '../../utils/helpers';
+import { maskPhone, maskEmail, formatCurrency, calcVisitCount } from '../../utils/helpers';
 import StatusBadge from '../../components/StatusBadge';
 
 export default function MemberDetail() {
@@ -54,7 +54,7 @@ export default function MemberDetail() {
               { label: '연락처', value: maskPhone(member.phone, role), bold: true },
               { label: '이메일', value: maskEmail(member.email, role), bold: true },
               { label: '가입일', value: member.registeredAt },
-              { label: '방문횟수', value: `${member.visitCount}회`, bold: true },
+              { label: '방문횟수', value: `${calcVisitCount(member, reservations)}회`, bold: true },
               { label: 'WORK MOOD', value: member.workMood || '-' },
               { label: '관심 업무', value: member.interests || '-' },
               { label: '문자 수신', value: member.smsConsent ? '동의' : '미동의' },
