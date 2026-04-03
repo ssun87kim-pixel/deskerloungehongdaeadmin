@@ -3,18 +3,28 @@ import { LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getRoleLabel } from '../utils/helpers';
 
-const navItems = [
-  { to: '/', label: '대시보드' },
-  { to: '/members', label: '멤버' },
-  { to: '/reservations', label: '예약' },
-  { to: '/passes', label: '이용권' },
-  { to: '/sales', label: '매출' },
-  { to: '/operations', label: '운영' },
-  { to: '/expenses', label: '지출' },
-  { to: '/schedule', label: '스케줄' },
-  { to: '/reports', label: '보고서' },
-  { to: '/settings', label: '설정' },
+import type { UserRole } from '../types';
+
+type MinRole = 'all' | 'manager' | 'super_admin';
+
+const navItems: { to: string; label: string; minRole: MinRole }[] = [
+  { to: '/', label: '대시보드', minRole: 'all' },
+  { to: '/members', label: '멤버', minRole: 'all' },
+  { to: '/reservations', label: '예약', minRole: 'all' },
+  { to: '/passes', label: '이용권', minRole: 'all' },
+  { to: '/sales', label: '매출', minRole: 'manager' },
+  { to: '/operations', label: '운영', minRole: 'all' },
+  { to: '/expenses', label: '지출', minRole: 'manager' },
+  { to: '/schedule', label: '스케줄', minRole: 'all' },
+  { to: '/reports', label: '보고서', minRole: 'manager' },
+  { to: '/settings', label: '설정', minRole: 'super_admin' },
 ];
+
+function hasAccess(role: UserRole, minRole: MinRole): boolean {
+  if (minRole === 'all') return true;
+  if (minRole === 'manager') return role === 'manager' || role === 'super_admin';
+  return role === 'super_admin';
+}
 
 export default function TopNav() {
   const { logout, user } = useAuth();
@@ -35,7 +45,7 @@ export default function TopNav() {
 
             <nav>
               <ul className="flex items-center gap-[20px]">
-                {navItems.map(({ to, label }) => (
+                {navItems.filter(item => user && hasAccess(user.role, item.minRole)).map(({ to, label }) => (
                   <li key={to}>
                     <NavLink
                       to={to}
